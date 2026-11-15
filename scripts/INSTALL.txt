@@ -1,0 +1,13 @@
+Arcside — installation
+
+1. Extract arcside-chrome-<version>.zip into a folder you won't move (for example ~/Applications/arcside).
+2. Open chrome://extensions and turn on "Developer mode".
+3. Click "Load unpacked" and choose the extracted folder.
+4. Pin the Arcside icon to the toolbar and click it to open the side panel.
+
+Notes
+- The extension ID depends on the folder path: if you move it or load it from another place, Chrome treats it as a new extension and your data (Spaces, folders, saved tabs) doesn't follow.
+  To move it: Settings -> Backup -> Export JSON, then Import… in the new install.
+- Arcside saves a daily backup to Downloads/Arcside backups/.
+- Shortcuts: Cmd+Shift+D opens the panel, Cmd+Shift+C copies the link, Cmd+Shift+K opens the in-page command bar.
+  Change them at chrome://extensions/shortcuts.
