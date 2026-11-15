@@ -1,7 +1,7 @@
 import { useEffect, useLayoutEffect, useRef, type ReactNode, type RefObject, type WheelEventHandler } from "react";
 import { ambientStyle, ZONES, zoneVars } from "@/lib/ambient";
 import type { Ink } from "@/lib/contrast";
-import { fontStack, type FontId } from "@/lib/fonts";
+import { ensureFont, fontStack, type FontId } from "@/lib/fonts";
 import type { AmbientMode } from "@/lib/models";
 import { cn } from "@/lib/utils";
 
@@ -56,7 +56,7 @@ interface Props {
   intensity: number;
   mode: AmbientMode;
   spaceColor: boolean;
-  font: FontId;
+  font?: FontId;
   className?: string;
   onWheel?: WheelEventHandler<HTMLDivElement>;
   children: ReactNode;
@@ -65,7 +65,11 @@ interface Props {
 export function PageShell({ accent, accent2, ink, colors, intensity, mode, spaceColor, font, className, onWheel, children }: Props) {
   const ref = useRef<HTMLDivElement>(null);
   useAmbientZones(ref, colors, intensity);
-  useEffect(() => { document.documentElement.style.setProperty("--arcside-font", fontStack(font)); }, [font]);
+  useEffect(() => {
+    if (!font) return;
+    document.documentElement.style.setProperty("--arcside-font", fontStack(font));
+    ensureFont(font).catch(error => console.error(error));
+  }, [font]);
   return <div ref={ref} data-ambient={mode} className={cn("space-bg relative isolate", className)} onWheel={onWheel}
     style={ambientStyle({ accent, accent2, ink, mode, spaceColor })}>{children}</div>;
 }

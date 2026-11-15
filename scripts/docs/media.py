@@ -174,6 +174,8 @@ def scene_stills(browser, base, tmp: Path):
     context = new_context(browser, "work")
     page, panel = open_window(context, base)
     click(page, panel.get_by_label("Settings", exact=True), pause=900)
+    panel.locator("body").evaluate("document.activeElement?.blur()")
+    page.wait_for_timeout(400)
     page.locator("#panel").screenshot(path=str(OUT / "settings.png"))
     squeeze(OUT / "settings.png")
     panel.locator("input[type=file]").set_input_files(str(backup_file(tmp)))

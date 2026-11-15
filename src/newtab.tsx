@@ -35,7 +35,7 @@ function go(text: string) {
 
 function NewTab() {
   const onError = (error: unknown) => console.error(error);
-  const [preferences] = useStore(preferencesStore, onError);
+  const [preferences, loaded] = useStore(preferencesStore, onError);
   const [session] = useStore(sessionStore, onError);
   const [windowId, setWindowId] = useState<number>();
   const [query, setQuery] = useState("");
@@ -55,7 +55,7 @@ function NewTab() {
     windowId === undefined ? undefined : sessionStore.update(current => ({ ...current, activeSpaceByWindow: { ...current.activeSpaceByWindow, [windowId]: spaceId } }));
 
   return <FetchMissingFavicons.Provider value={preferences.fetchFavicons}>
-    <PageShell accent={space.color} accent2={space.color2 ?? space.color} ink="light" colors={null} intensity={100} mode="vivid" spaceColor font={preferences.font}
+    <PageShell accent={space.color} accent2={space.color2 ?? space.color} ink="light" colors={null} intensity={100} mode="vivid" spaceColor font={loaded ? preferences.font : undefined}
       className="flex min-h-screen flex-col items-center px-6 pt-[13vh] pb-10">
       <button type="button" aria-label={panelOpen ? "Close Arcside" : "Open Arcside"} title={panelOpen ? "Close Arcside" : "Open Arcside"} disabled={windowId === undefined}
         onClick={() => { if (windowId !== undefined) void togglePanel(windowId, panelOpen).catch(error => console.error(error)); }}

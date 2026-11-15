@@ -4,6 +4,13 @@ All notable changes to Arcside are documented here. The format follows [Keep a C
 
 ## [Unreleased]
 
+## [0.0.2] - 2026-11-15
+
+### Changed
+
+- **Smaller package.** Fonts ship only their Latin subset (480 KB down to 178 KB), and the font you picked is the only one downloaded, loaded when the panel opens. Inter is the default, and the font buttons in Settings no longer preview each family.
+- **Faster start.** Settings, the command palette, the Space and folder dialogs, the bookmark library, History and the backup preview load on demand. The panel's own script is about 40% smaller.
+
 ## [0.0.1] - 2026-11-15
 
 First public release.
@@ -20,5 +27,6 @@ First public release.
 - **New tab page.** Greeting, clock, search, Favorites, saved links and a button to open or close the sidebar.
 - **Polish.** In-app confirmation dialogs, toasts with a progress bar, undo with `Cmd+Z`, bundled fonts, keyboard navigation and reduced-motion support.
 
-[Unreleased]: https://github.com/dbbd59/arcside/compare/v0.0.1...HEAD
+[Unreleased]: https://github.com/dbbd59/arcside/compare/v0.0.2...HEAD
+[0.0.2]: https://github.com/dbbd59/arcside/compare/v0.0.1...v0.0.2
 [0.0.1]: https://github.com/dbbd59/arcside/releases/tag/v0.0.1

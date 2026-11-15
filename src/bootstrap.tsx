@@ -4,7 +4,6 @@ import { ArrowDownToLine, Check, PanelLeft } from "lucide-react";
 import { ConfirmProvider } from "@/components/ConfirmDialog";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import "./bundled-fonts";
 import "./styles.css";
 
 function ExtensionOnly() {

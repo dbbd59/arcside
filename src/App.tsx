@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { lazy, Suspense, useEffect, useMemo, useRef, useState } from "react";
 import {
   Archive, ArrowLeft, ArrowRight, BookOpen, Command, Download, Eraser, FolderPlus,
   Link, Plus, RotateCw, Search, SlidersHorizontal, Sparkles, Undo2, X
@@ -22,26 +22,27 @@ import { duplicateTabIds, searchNeedle, searchSaved, searchTabs, todayTabs } fro
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
-import ArchiveSheet from "@/components/ArchiveSheet";
-import BookmarkDrawer from "@/components/BookmarkDrawer";
-import CommandPalette from "@/components/CommandPalette";
 import { Count } from "@/components/rows";
 import { FetchMissingFavicons } from "@/components/Favicon";
 import { FavoritesGrid } from "@/components/FavoritesGrid";
 import { IconButton } from "@/components/IconButton";
-import NameDialog from "@/components/NameDialog";
 import { SavedTree } from "@/components/SavedTree";
 import { SearchResults } from "@/components/SearchResults";
-import SettingsSheet from "@/components/SettingsSheet";
-import SpaceDialog from "@/components/SpaceDialog";
 import { SpaceBar } from "@/components/SpaceBar";
 import { TabRow } from "@/components/TabRow";
 import { trackPanel } from "@/lib/panel";
 import { useConfirm } from "@/components/ConfirmDialog";
-import ImportBackupDialog from "@/components/ImportBackupDialog";
 import { PageShell } from "@/components/PageShell";
 import { mount } from "./bootstrap";
 import { ToastBar } from "@/components/ToastBar";
+
+const ArchiveSheet = lazy(() => import("@/components/ArchiveSheet"));
+const BookmarkDrawer = lazy(() => import("@/components/BookmarkDrawer"));
+const CommandPalette = lazy(() => import("@/components/CommandPalette"));
+const ImportBackupDialog = lazy(() => import("@/components/ImportBackupDialog"));
+const NameDialog = lazy(() => import("@/components/NameDialog"));
+const SettingsSheet = lazy(() => import("@/components/SettingsSheet"));
+const SpaceDialog = lazy(() => import("@/components/SpaceDialog"));
 
 const SEARCH_LIMIT = 70;
 const OPEN_ALL_CONFIRM_ABOVE = 15;
@@ -139,7 +140,7 @@ function ExtensionApp() {
     { id: "backup", label: "Export backup (JSON)", icon: <Download size={14} />, run: () => arcside.exportBackup("all") }
   ];
 
-  return <FetchMissingFavicons.Provider value={fetchFavicons}><PageShell accent={accent} accent2={accent2} ink={ink} colors={ambient ? pageColors?.colors ?? null : null} intensity={ambientIntensity} mode={mode} spaceColor={!(ambient && pageColors) || ambientSpaceColor} font={font}
+  return <FetchMissingFavicons.Provider value={fetchFavicons}><PageShell accent={accent} accent2={accent2} ink={ink} colors={ambient ? pageColors?.colors ?? null : null} intensity={ambientIntensity} mode={mode} spaceColor={!(ambient && pageColors) || ambientSpaceColor} font={arcside.ready ? font : undefined}
     className={cn("flex h-full flex-col", swiping && "swiping")} onWheel={nav.onWheel}>
     <header className="flex h-11 min-h-11 items-center justify-between px-1.5">
       <div className="flex items-center">
@@ -244,37 +245,39 @@ function ExtensionApp() {
     <SpaceBar spaces={spaces} activeId={activeSpace.id} onChoose={nav.choose} onNew={() => setSpaceDialog("new")} onEdit={() => setSpaceDialog(activeSpace)}
       onDropTab={(tabId, spaceId) => run(arcside.assignTab(tabId, spaceId))} onReorder={(sourceId, targetId) => run(arcside.reorderSpace(sourceId, targetId))} />
 
-    {libraryOpen && <BookmarkDrawer tree={arcside.tree} isFavorite={isFavorite} onPreview={url => run(arcside.openGlance(url))}
-      onClose={() => setLibraryOpen(false)} onOpen={url => run(arcside.openUrl(url))} onAdd={id => run(arcside.addFavoriteBookmark(id))}
-      onToggleFavorite={toggleFavorite} onImport={file => run(arcside.importBookmarks(file))} onExport={arcside.exportSpace} />}
+    <Suspense fallback={null}>
+      {libraryOpen && <BookmarkDrawer tree={arcside.tree} isFavorite={isFavorite} onPreview={url => run(arcside.openGlance(url))}
+        onClose={() => setLibraryOpen(false)} onOpen={url => run(arcside.openUrl(url))} onAdd={id => run(arcside.addFavoriteBookmark(id))}
+        onToggleFavorite={toggleFavorite} onImport={file => run(arcside.importBookmarks(file))} onExport={arcside.exportSpace} />}
 
-    {archiveOpen && <ArchiveSheet archived={archived} closed={closedHistory} onClose={() => setArchiveOpen(false)}
-      onRestoreClosed={id => run(arcside.restoreClosed(id))} onRestore={id => run(arcside.restoreArchived(id))}
-      onRemove={id => run(arcside.removeArchived(id))} onClear={() => run(arcside.clearArchive())} />}
+      {archiveOpen && <ArchiveSheet archived={archived} closed={closedHistory} onClose={() => setArchiveOpen(false)}
+        onRestoreClosed={id => run(arcside.restoreClosed(id))} onRestore={id => run(arcside.restoreArchived(id))}
+        onRemove={id => run(arcside.removeArchived(id))} onClear={() => run(arcside.clearArchive())} />}
 
-    {settingsOpen && <SettingsSheet
-      settings={arcside.preferences} spaceName={activeSpace.name} onChange={patch => run(arcside.setSettings(patch))}
-      onExportBackup={arcside.exportBackup} onFailure={arcside.onError} onClose={() => setSettingsOpen(false)}
-      onImportBackup={file => run(file.text().then(text => setPendingBackup(parseBackup(text))))} />}
+      {settingsOpen && <SettingsSheet
+        settings={arcside.preferences} spaceName={activeSpace.name} onChange={patch => run(arcside.setSettings(patch))}
+        onExportBackup={arcside.exportBackup} onFailure={arcside.onError} onClose={() => setSettingsOpen(false)}
+        onImportBackup={file => run(file.text().then(text => setPendingBackup(parseBackup(text))))} />}
 
-    {pendingBackup && <ImportBackupDialog backup={pendingBackup} onClose={() => setPendingBackup(null)}
-      onImport={mode => { run(arcside.importBackup(pendingBackup, mode)); setPendingBackup(null); }} />}
+      {pendingBackup && <ImportBackupDialog backup={pendingBackup} onClose={() => setPendingBackup(null)}
+        onImport={mode => { run(arcside.importBackup(pendingBackup, mode)); setPendingBackup(null); }} />}
 
-    {paletteOpen && <CommandPalette tabs={arcside.tabs} saved={saved} bookmarks={allBookmarks} spaces={spaces} activeSpaceId={activeSpace.id}
-      onClose={() => setPaletteOpen(false)} onOpenTab={id => run(arcside.activateTab(id))}
-      onOpenSaved={item => run(arcside.openBound(item.id, item.url))} onOpenUrl={url => run(arcside.openUrl(url))}
-      onSwitchSpace={nav.choose} actions={paletteActions} />}
+      {paletteOpen && <CommandPalette tabs={arcside.tabs} saved={saved} bookmarks={allBookmarks} spaces={spaces} activeSpaceId={activeSpace.id}
+        onClose={() => setPaletteOpen(false)} onOpenTab={id => run(arcside.activateTab(id))}
+        onOpenSaved={item => run(arcside.openBound(item.id, item.url))} onOpenUrl={url => run(arcside.openUrl(url))}
+        onSwitchSpace={nav.choose} actions={paletteActions} />}
 
-    {spaceDialog && <SpaceDialog space={spaceDialog === "new" ? undefined : spaceDialog} onClose={() => setSpaceDialog(null)}
-      onSave={fields => spaceDialog === "new" ? arcside.addSpace(fields) : arcside.editSpace(spaceDialog.id, fields)}
-      onDelete={spaceDialog !== "new" && spaceDialog.id !== DEFAULT_SPACE_ID ? () => arcside.removeSpace(spaceDialog.id) : undefined} />}
+      {spaceDialog && <SpaceDialog space={spaceDialog === "new" ? undefined : spaceDialog} onClose={() => setSpaceDialog(null)}
+        onSave={fields => spaceDialog === "new" ? arcside.addSpace(fields) : arcside.editSpace(spaceDialog.id, fields)}
+        onDelete={spaceDialog !== "new" && spaceDialog.id !== DEFAULT_SPACE_ID ? () => arcside.removeSpace(spaceDialog.id) : undefined} />}
 
-    {folderDialog && <NameDialog
-      title={"folder" in folderDialog ? "Rename folder" : folderDialog.parentId ? "New subfolder" : "New folder"}
-      initial={"folder" in folderDialog ? folderDialog.folder.name : ""}
-      onClose={() => setFolderDialog(null)}
-      onSave={name => "folder" in folderDialog ? arcside.renameFolder(folderDialog.folder.id, name) : arcside.addFolder(name, folderDialog.parentId)} />}
+      {folderDialog && <NameDialog
+        title={"folder" in folderDialog ? "Rename folder" : folderDialog.parentId ? "New subfolder" : "New folder"}
+        initial={"folder" in folderDialog ? folderDialog.folder.name : ""}
+        onClose={() => setFolderDialog(null)}
+        onSave={name => "folder" in folderDialog ? arcside.renameFolder(folderDialog.folder.id, name) : arcside.addFolder(name, folderDialog.parentId)} />}
 
+    </Suspense>
     <ToastBar toast={arcside.toast} onDismiss={() => arcside.setToast(null)} />
   </PageShell></FetchMissingFavicons.Provider>;
 }

@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import { Download, FolderOpen, Upload } from "lucide-react";
-import { FONTS, isFontId } from "@/lib/fonts";
+import { DEFAULT_FONT, FONTS, isFontId } from "@/lib/fonts";
 import { backupNow, showLatestBackup } from "@/backup-job";
 import type { BackupScope } from "@/lib/backup";
 import { AMBIENT_MODES, isAmbientMode, type Settings } from "@/lib/models";
@@ -39,7 +39,7 @@ export default function SettingsSheet({ settings, spaceName, onChange, onExportB
         <Row title="Font" hint="Bundled with Arcside, works offline">
           <ToggleGroup type="single" variant="outline" size="sm" className="flex-wrap" value={settings.font} aria-label="Font"
             onValueChange={value => { if (isFontId(value)) onChange({ font: value }); }}>
-            {FONTS.map(font => <ToggleGroupItem key={font.id} value={font.id} style={{ fontFamily: font.stack }}>{font.label}</ToggleGroupItem>)}
+            {FONTS.map(font => <ToggleGroupItem key={font.id} value={font.id}>{font.label}{font.id === DEFAULT_FONT && <span className="ml-1.5 text-[10px] text-muted-foreground">default</span>}</ToggleGroupItem>)}
           </ToggleGroup>
         </Row>
         <Row title="Ambient color" hint="Tints the sidebar with the left edge of the page (captures the tab image locally)">
