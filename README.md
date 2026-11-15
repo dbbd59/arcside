@@ -11,6 +11,7 @@ Spaces, folders, favorites and a command bar in Chrome's own side panel, tinted 
 ![Chrome 116+](https://img.shields.io/badge/Chrome-116%2B-34a853?style=flat-square)
 ![React 19](https://img.shields.io/badge/React-19-61dafb?style=flat-square&logo=react&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178c6?style=flat-square&logo=typescript&logoColor=white)
+![License: MIT](https://img.shields.io/badge/license-MIT-12a37f?style=flat-square)
 ![Release](https://img.shields.io/github/v/release/dbbd59/arcside?style=flat-square&color=7c4dff)
 ![No tracking](https://img.shields.io/badge/data-stays%20local-12a37f?style=flat-square)
 
@@ -122,7 +123,7 @@ On Windows and Linux use `Ctrl` for `Cmd`. Change the global ones at `chrome://e
 
 ## Privacy and permissions
 
-Arcside has no server, no account and no analytics. The only network request it can make is an optional `/favicon.ico` fetch from the sites of your saved links, which you can turn off in Settings.
+Arcside has no server, no account and no analytics. Read the full [privacy policy](PRIVACY.md). The only network request it can make is an optional `/favicon.ico` fetch from the sites of your saved links, which you can turn off in Settings.
 
 | What | Where | Lifetime |
 |---|---|---|
@@ -214,3 +215,7 @@ scripts/docs/                       # fake-data harness that renders the README 
 `bun run docs:media` serves the built extension next to a mock Chrome window, injects a fake `chrome.*` API with made-up data (Spaces, tabs, bookmarks), then records the real UI with Playwright and ffmpeg. It needs Python with `playwright`, Google Chrome and `ffmpeg`. Run `bun run build` first. The output lands in `docs/`.
 
 </details>
+
+## License
+
+[MIT](LICENSE) © 2026 Davide Bolzoni

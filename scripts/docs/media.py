@@ -268,6 +268,65 @@ def scene_videos(browser, base, tmp: Path):
     record("palette", palette)
 
 
+def scene_store(browser, base):
+    from PIL import Image, ImageDraw, ImageFont
+    store = ROOT / "store"
+    store.mkdir(exist_ok=True)
+
+    def window(space, name, steps=None):
+        context = browser.new_context(viewport={"width": 1280, "height": 800})
+        context.add_init_script(f"window.__ARC_SEED__ = {json.dumps(seed.build(space))};")
+        context.add_init_script(path=str(DOCS / "chrome-mock.js"))
+        page, panel = open_window(context, base)
+        if steps:
+            steps(page, panel)
+        page.screenshot(path=str(store / name))
+        context.close()
+
+    def palette(page, panel):
+        panel.locator("body").click(position={"x": 200, "y": 700})
+        page.keyboard.press("Meta+k")
+        page.wait_for_timeout(500)
+        page.keyboard.type("ru", delay=120)
+        page.wait_for_timeout(700)
+
+    def backup(page, panel):
+        click(page, panel.get_by_label("Settings", exact=True), pause=900)
+        panel.locator("input[type=file]").set_input_files(str(backup_file(Path(store.parent / "docs"))))
+        page.wait_for_timeout(900)
+
+    window("work", "1-spaces-and-folders.png")
+    window("personal", "2-ambient-color.png")
+    window("learning", "3-command-palette.png", palette)
+    window("work", "4-backup-preview.png", backup)
+    (ROOT / "docs" / "arcside-backup-2026-11-14.json").unlink(missing_ok=True)
+    context = browser.new_context(viewport={"width": 1280, "height": 800})
+    context.add_init_script(f"window.__ARC_SEED__ = {json.dumps(seed.build('work'))};")
+    context.add_init_script(path=str(DOCS / "chrome-mock.js"))
+    page = context.new_page()
+    page.clock.set_fixed_time("2026-11-17T09:41:00")
+    page.goto(f"{base}/newtab.html")
+    page.wait_for_timeout(1800)
+    page.screenshot(path=str(store / "5-new-tab.png"))
+    context.close()
+    for path in store.glob("[1-5]-*.png"):
+        Image.open(path).convert("RGB").save(path, optimize=True)
+
+    tile = Image.new("RGB", (440, 280))
+    pixels = tile.load()
+    for y in range(280):
+        for x in range(440):
+            t = (x / 440 + y / 280) / 2
+            pixels[x, y] = (round(47 + (124 - 47) * t), round(109 + (77 - 109) * t), round(246 + (255 - 246) * t))
+    logo = Image.open(ROOT / "public" / "icons" / "arcside128.png").convert("RGBA")
+    tile.paste(logo, (32, 36), logo)
+    draw = ImageDraw.Draw(tile)
+    draw.text((32, 52 + 128), "Arcside", font=ImageFont.truetype("/System/Library/Fonts/Helvetica.ttc", 44, index=1), fill="white")
+    draw.text((32, 52 + 128 + 58), "Spaces, folders and a command bar", font=ImageFont.truetype("/System/Library/Fonts/Helvetica.ttc", 17), fill=(255, 255, 255, 230))
+    draw.text((32, 52 + 128 + 82), "in Chrome's side panel", font=ImageFont.truetype("/System/Library/Fonts/Helvetica.ttc", 17), fill=(255, 255, 255, 230))
+    tile.save(store / "promo-tile-440x280.png", optimize=True)
+
+
 def main():
     from playwright.sync_api import sync_playwright
     import tempfile
@@ -278,6 +337,7 @@ def main():
         tmp = Path(directory)
         scene_stills(browser, base, tmp)
         scene_videos(browser, base, tmp)
+        scene_store(browser, base)
         browser.close()
     server.shutdown()
 
