@@ -139,7 +139,7 @@ function ExtensionApp() {
     { id: "backup", label: "Export backup (JSON)", icon: <Download size={14} />, run: () => arcside.exportBackup("all") }
   ];
 
-  return <FetchMissingFavicons.Provider value={fetchFavicons}><PageShell accent={accent} accent2={accent2} ink={ink} colors={ambient ? pageColors?.colors ?? null : null} intensity={ambientIntensity} mode={mode} spaceColor={!ambient || ambientSpaceColor} font={font}
+  return <FetchMissingFavicons.Provider value={fetchFavicons}><PageShell accent={accent} accent2={accent2} ink={ink} colors={ambient ? pageColors?.colors ?? null : null} intensity={ambientIntensity} mode={mode} spaceColor={!(ambient && pageColors) || ambientSpaceColor} font={font}
     className={cn("flex h-full flex-col", swiping && "swiping")} onWheel={nav.onWheel}>
     <header className="flex h-11 min-h-11 items-center justify-between px-1.5">
       <div className="flex items-center">
