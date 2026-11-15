@@ -14,6 +14,8 @@ import { staleTabIds } from '../src/lib/archive.ts';
 import { bookmarkMap, flattenBookmarks, matchBookmarks } from '../src/lib/bookmarks.ts';
 import { countImported, exportBookmarksHtml, parseBookmarksHtml } from '../src/lib/bookmark-html.ts';
 import { hostname, safeWebUrl, sameUrl } from '../src/lib/urls.ts';
+import { readFileSync } from 'node:fs';
+import { DEFAULT_FONT, FONTS, fontStack, isFontId } from '../src/lib/fonts.ts';
 
 test('initial preferences: Personal Space always present', () => {
   const prefs = validPreferences(null);
@@ -417,4 +419,17 @@ test('move folder: reorders among siblings, changes parent, goes to root, reject
   expect(moveFolder(folders, 'a', 'd')).toBe(folders);
   expect(moveFolder(folders, 'a', 'a')).toBe(folders);
   expect(moveFolder(folders, 'zzz', null)).toBe(folders);
+});
+
+test('fonts: default exists, system has no family, every font resolves to a usable stack', () => {
+  expect(isFontId(DEFAULT_FONT)).toBe(true);
+  expect(isFontId('comic-sans')).toBe(false);
+  expect(fontStack('system')).not.toContain('Variable');
+  FONTS.filter(font => font.id !== 'system').forEach(font => expect(fontStack(font.id).startsWith(`"${font.family}"`)).toBe(true));
+});
+
+test('CSS: the font rule is unlayered and more specific than the stylesheet Chrome injects into extension pages', () => {
+  const css = readFileSync(new URL('../src/styles.css', import.meta.url), 'utf8');
+  expect(css).toMatch(/^html body \{ font-family: var\(--arcside-font/m);
+  expect(css.match(/@layer base \{[\s\S]*?\n\}/)?.[0]).not.toContain('font-family');
 });

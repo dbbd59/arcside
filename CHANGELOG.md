@@ -4,6 +4,16 @@ All notable changes to Arcside are documented here. The format follows [Keep a C
 
 ## [Unreleased]
 
+## [0.0.3] - 2026-11-15
+
+### Added
+
+- **Brand identity.** New logo, icon, banner and Web Store artwork in a synthwave style. The sidebar, dialogs and new tab use the same palette, and new installs start with a pink-to-orange Personal Space. New "Synthwave" and "Neon" gradient presets.
+
+### Fixed
+
+- **Fonts now apply.** Chrome injects its own `body` font into extension pages, which overrode the font you picked, so every font looked like the system one. The rule now wins, and only the selected font is downloaded.
+
 ## [0.0.2] - 2026-11-15
 
 ### Changed
@@ -27,6 +37,7 @@ First public release.
 - **New tab page.** Greeting, clock, search, Favorites, saved links and a button to open or close the sidebar.
 - **Polish.** In-app confirmation dialogs, toasts with a progress bar, undo with `Cmd+Z`, bundled fonts, keyboard navigation and reduced-motion support.
 
-[Unreleased]: https://github.com/dbbd59/arcside/compare/v0.0.2...HEAD
+[Unreleased]: https://github.com/dbbd59/arcside/compare/v0.0.3...HEAD
+[0.0.3]: https://github.com/dbbd59/arcside/compare/v0.0.2...v0.0.3
 [0.0.2]: https://github.com/dbbd59/arcside/compare/v0.0.1...v0.0.2
 [0.0.1]: https://github.com/dbbd59/arcside/releases/tag/v0.0.1

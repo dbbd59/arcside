@@ -90,7 +90,7 @@ export const DEFAULT_SPACE_ID = "personal";
 
 export const DEFAULT_PREFERENCES: Preferences = {
   spaces: [
-    { id: DEFAULT_SPACE_ID, name: "Personal", color: "#2f6df6", emoji: "✦" },
+    { id: DEFAULT_SPACE_ID, name: "Personal", color: "#ff2fb4", color2: "#ff9f1c", emoji: "✦" },
     { id: "work", name: "Work", color: "#12a37f", emoji: "◈" }
   ],
   folders: [],

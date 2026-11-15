@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Arcside",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Arc-style vertical sidebar for tabs, favorites and workspaces.",
   "minimum_chrome_version": "116",
   "permissions": ["sidePanel", "tabs", "bookmarks", "storage", "favicon", "offscreen", "clipboardWrite", "alarms", "sessions", "scripting", "search", "downloads"],

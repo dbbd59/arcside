@@ -64,6 +64,7 @@ function NewTab() {
       </button>
       <div className="stagger-in flex w-full max-w-xl flex-col items-center gap-7">
         <div className="text-center">
+          <img src="icons/arcside128.png" width={52} height={52} alt="" className="mx-auto mb-3 drop-shadow-[0_6px_18px_rgba(255,47,180,.35)]" />
           <div className="text-[13px] font-medium tracking-wide text-ink/70">{greeting(now)}</div>
           <div className="mt-1 text-7xl leading-none font-semibold tracking-tight tabular-nums">{now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</div>
           <div className="mt-2.5 text-sm text-ink/70">{now.toLocaleDateString([], { weekday: "long", day: "numeric", month: "long" })}</div>

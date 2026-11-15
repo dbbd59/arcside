@@ -1,18 +1,17 @@
 <div align="center">
 
-<img src="public/icons/arcside128.png" width="96" alt="Arcside logo" />
+<h1>
+  <img src="docs/brand/banner.jpg" alt="Arcside: the vertical sidebar Chrome never shipped" width="880" />
+</h1>
 
-# Arcside
+**Spaces, folders, favorites and a command bar in Chrome's own side panel, tinted by the page you're on.**
 
-**The vertical sidebar Chrome never shipped.**<br />
-Spaces, folders, favorites and a command bar in Chrome's own side panel, tinted by the page you're on.
-
-![Manifest V3](https://img.shields.io/badge/Manifest-V3-4285f4?style=flat-square)
-![Chrome 116+](https://img.shields.io/badge/Chrome-116%2B-34a853?style=flat-square)
+![License: MIT](https://img.shields.io/badge/license-MIT-ff2fb4?style=flat-square)
+![Release](https://img.shields.io/github/v/release/dbbd59/arcside?style=flat-square&color=ff9f1c)
+![Manifest V3](https://img.shields.io/badge/Manifest-V3-00c2d8?style=flat-square)
+![Chrome 116+](https://img.shields.io/badge/Chrome-116%2B-7c4dff?style=flat-square)
 ![React 19](https://img.shields.io/badge/React-19-61dafb?style=flat-square&logo=react&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178c6?style=flat-square&logo=typescript&logoColor=white)
-![License: MIT](https://img.shields.io/badge/license-MIT-12a37f?style=flat-square)
-![Release](https://img.shields.io/github/v/release/dbbd59/arcside?style=flat-square&color=7c4dff)
 ![No tracking](https://img.shields.io/badge/data-stays%20local-12a37f?style=flat-square)
 
 <img src="docs/hero.gif" width="860" alt="Switching between four Spaces while the sidebar colors follow each page" />
@@ -205,6 +204,7 @@ src/
 └── lib/                            # models and stores, folders, selectors, preference ops,
                                     # bookmarks/HTML, urls, tabs, favicons, ambient, contrast, backup
 scripts/docs/                       # fake-data harness that renders the README media
+docs/brand/                         # logo, mark and banner artwork
 ```
 
 </details>

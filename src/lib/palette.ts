@@ -3,11 +3,13 @@ export const FOLDER_COLORS = [
 ];
 
 export const SPACE_COLORS = [
-  "#2f6df6", "#0ea5e9", "#14b8a6", "#12a37f", "#22c55e", "#c9a227",
+  "#ff2fb4", "#2f6df6", "#0ea5e9", "#14b8a6", "#12a37f", "#22c55e", "#c9a227",
   "#e5742b", "#ef4444", "#d9468f", "#a855f7", "#7c4dff", "#64748b"
 ];
 
 export const SPACE_GRADIENTS: { name: string; from: string; to: string }[] = [
+  { name: "Synthwave", from: "#ff2fb4", to: "#ff9f1c" },
+  { name: "Neon", from: "#00e5ff", to: "#ff2fb4" },
   { name: "Aurora", from: "#2f6df6", to: "#7c4dff" },
   { name: "Sunset", from: "#ff6b6b", to: "#ffa94d" },
   { name: "Lagoon", from: "#0ea5e9", to: "#14b8a6" },

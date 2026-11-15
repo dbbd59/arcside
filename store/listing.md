@@ -1,6 +1,6 @@
 # Chrome Web Store listing
 
-Copy for the developer dashboard. Screenshots are in this folder (1280×800) and `promo-tile-440x280.png` is the small promo tile.
+Copy for the developer dashboard. Screenshots are in this folder (1280×800), `promo-tile-440x280.png` is the small promo tile and `marquee-1400x560.jpg` is the marquee promo image.
 
 ## Basics
 

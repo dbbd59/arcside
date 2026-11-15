@@ -66,7 +66,7 @@ chrome.commands.onCommand.addListener(command => {
     const [tab] = await chrome.tabs.query({ active: true, lastFocusedWindow: true });
     if (!tab?.url) return;
     await copyToClipboard(tab.url);
-    await chrome.action.setBadgeBackgroundColor({ color: "#2f6df6" });
+    await chrome.action.setBadgeBackgroundColor({ color: "#ff2fb4" });
     await chrome.action.setBadgeText({ text: "✓" });
     send({ type: "copied" }).catch(() => {});
     setTimeout(() => { void chrome.action.setBadgeText({ text: "" }); }, BADGE_MS);

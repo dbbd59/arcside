@@ -271,7 +271,7 @@ def scene_videos(browser, base, tmp: Path):
 
 
 def scene_store(browser, base):
-    from PIL import Image, ImageDraw, ImageFont
+    from PIL import Image
     store = ROOT / "store"
     store.mkdir(exist_ok=True)
 
@@ -313,20 +313,6 @@ def scene_store(browser, base):
     context.close()
     for path in store.glob("[1-5]-*.png"):
         Image.open(path).convert("RGB").save(path, optimize=True)
-
-    tile = Image.new("RGB", (440, 280))
-    pixels = tile.load()
-    for y in range(280):
-        for x in range(440):
-            t = (x / 440 + y / 280) / 2
-            pixels[x, y] = (round(47 + (124 - 47) * t), round(109 + (77 - 109) * t), round(246 + (255 - 246) * t))
-    logo = Image.open(ROOT / "public" / "icons" / "arcside128.png").convert("RGBA")
-    tile.paste(logo, (32, 36), logo)
-    draw = ImageDraw.Draw(tile)
-    draw.text((32, 52 + 128), "Arcside", font=ImageFont.truetype("/System/Library/Fonts/Helvetica.ttc", 44, index=1), fill="white")
-    draw.text((32, 52 + 128 + 58), "Spaces, folders and a command bar", font=ImageFont.truetype("/System/Library/Fonts/Helvetica.ttc", 17), fill=(255, 255, 255, 230))
-    draw.text((32, 52 + 128 + 82), "in Chrome's side panel", font=ImageFont.truetype("/System/Library/Fonts/Helvetica.ttc", 17), fill=(255, 255, 255, 230))
-    tile.save(store / "promo-tile-440x280.png", optimize=True)
 
 
 def main():

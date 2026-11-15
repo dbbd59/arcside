@@ -72,25 +72,25 @@
 
 :root {
   --radius: 0.625rem;
-  --background: #181824;
+  --background: #150d22;
   --foreground: #f4f2fa;
-  --card: #242331;
+  --card: #211433;
   --card-foreground: #f4f2fa;
-  --popover: #282735;
+  --popover: #25173a;
   --popover-foreground: #f4f2fa;
-  --primary: #a993ec;
-  --primary-foreground: #1d1729;
-  --secondary: #2d2b3b;
+  --primary: #ff5cc8;
+  --primary-foreground: #23072c;
+  --secondary: #32204b;
   --secondary-foreground: #f4f2fa;
-  --muted: #25242f;
-  --muted-foreground: #a9a5b8;
+  --muted: #261739;
+  --muted-foreground: #b9a8d1;
   --accent: rgba(255, 255, 255, 0.09);
   --accent-foreground: #ffffff;
-  --destructive: #f2aaa9;
+  --destructive: #ff8a8a;
   --border: rgba(255, 255, 255, 0.09);
-  --input: #575063;
-  --ring: #b7a4ff;
-  --space-accent: #2f6df6;
+  --input: #5d4678;
+  --ring: #ff7ad6;
+  --space-accent: #ff2fb4;
 }
 
 @theme {
@@ -127,9 +127,11 @@
 @layer base {
   * { @apply border-border outline-ring/50; }
   html, body, #root { @apply m-0 h-full w-full min-w-[238px] overflow-hidden; overscroll-behavior-x: none; }
-  body { @apply bg-background text-foreground antialiased; font-family: var(--arcside-font, ui-sans-serif, system-ui, sans-serif); font-synthesis: none; }
+  body { @apply bg-background text-foreground antialiased; font-synthesis: none; }
   button { @apply cursor-pointer; }
 }
+
+html body { font-family: var(--arcside-font, ui-sans-serif, system-ui, sans-serif); }
 
 [data-dragging] { opacity: 0.45; transform: scale(0.97); box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35); }
 

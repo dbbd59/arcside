@@ -9,7 +9,7 @@ def space(id, name, emoji, color, color2=None):
 
 
 SPACES = [
-    space("personal", "Personal", "✦", "#2f6df6", "#7c4dff"),
+    space("personal", "Personal", "✦", "#ff2fb4", "#ff9f1c"),
     space("work", "Work", "💼", "#0ea5e9", "#14b8a6"),
     space("studio", "Studio", "🎨", "#d9468f", "#7c4dff"),
     space("learning", "Learning", "📚", "#22c55e", "#0ea5e9"),
