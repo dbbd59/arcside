@@ -1,101 +1,196 @@
+<div align="center">
+
+<img src="public/icons/arcside128.png" width="96" alt="Arcside logo" />
+
 # Arcside
 
-**The vertical sidebar Chrome never shipped.** Spaces, folders, favorites and a command bar, built into Chrome's own side panel. No new browser, no account, no tracking.
+**The vertical sidebar Chrome never shipped.**<br />
+Spaces, folders, favorites and a command bar in Chrome's own side panel, tinted by the page you're on.
 
-Love the way Arc organizes tabs, but need to stay on Chrome? Arcside brings that workflow to the browser you already use, with your extensions, your profile and your sync.
+![Manifest V3](https://img.shields.io/badge/Manifest-V3-4285f4?style=flat-square)
+![Chrome 116+](https://img.shields.io/badge/Chrome-116%2B-34a853?style=flat-square)
+![React 19](https://img.shields.io/badge/React-19-61dafb?style=flat-square&logo=react&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178c6?style=flat-square&logo=typescript&logoColor=white)
+![Release](https://img.shields.io/github/v/release/dbbd59/arcside?style=flat-square&color=7c4dff)
+![No tracking](https://img.shields.io/badge/data-stays%20local-12a37f?style=flat-square)
+
+<img src="docs/hero.gif" width="860" alt="Switching between four Spaces while the sidebar colors follow each page" />
+
+[Features](#features) · [Install](#install) · [Shortcuts](#shortcuts) · [Privacy](#privacy-and-permissions) · [FAQ](#faq) · [Development](#development) · [Changelog](CHANGELOG.md)
+
+</div>
 
 ## Why Arcside
 
-- **Stay on Chrome.** It's a Manifest V3 extension that lives in the native side panel. Nothing to migrate.
-- **Your tabs, finally organized.** Split work, personal and side projects into Spaces, then pin what matters into nested folders.
-- **Fast by design.** Keyboard-first, instant search, a command palette on any page.
-- **Private by default.** Everything stays in your browser. Arcside has no server and sends no data anywhere.
+If you like how Arc organizes tabs but live in Chrome, this is the missing piece. Arcside is a regular Manifest V3 extension, so you keep your extensions, your profile and your sync. It adds a sidebar that groups your work into Spaces and gets out of the way.
+
+- **Stay on Chrome.** It lives in the native side panel. Nothing to migrate, nothing to trust except the extension.
+- **Organized by default.** Split work, personal life and side projects into Spaces. Pin what matters into nested folders. Unsaved tabs stay under *Today*, ready to clear.
+- **Fast.** Keyboard-first, instant search, a command palette that also opens over any web page.
+- **Private.** No server, no account, no analytics. Everything stays in your browser.
 
 ## Features
 
-### Organize
+### Spaces that follow your page
 
-- **Spaces.** Workspaces with a name, an emoji and a solid color or a custom gradient (color picker, 8 presets, swap). Switch with a click, a two-finger swipe (with live preview), `Ctrl+Alt+←/→`, or by dragging a tab onto a Space. Switching returns you to the last tab you used there and reuses an empty tab if the Space has none.
-- **Saved tabs and folders.** Permanent tabs per Space, in nested folders with colors and drag-and-drop reordering, plus "Move to…" and "Open all". Click a saved tab to open or reactivate it. Closing it never deletes it. Folders remember whether they were open, and a collapsed folder keeps its open pages visible.
-- **Favorites.** One tile grid per Space with its own title and URL, independent of Chrome bookmarks. A tab bound to a tile stays out of Today.
-- **Today.** The unsaved tabs of the active Space, with one-click Clear and Duplicates. New tabs land in the active Space of the window, and after a Chrome restart they return to the Space they were in (matched by URL).
+Each Space has its own tabs, folders, saved links and Favorites. The sidebar background picks up the colors along the left edge of the page you're viewing, in 16 smoothly animated zones with a soft drifting aura, and the text re-contrasts itself automatically.
 
-### Move fast
+<img src="docs/spaces.png" alt="Four Spaces, each tinted by a different page" />
 
-- **Search and command bar.** Search in the panel with `/` and press `Enter` to open the first result, or hit `Cmd+K` for the palette with commands.
-- **Palette on any page.** `Cmd+Shift+K` opens a palette over any web page to jump to tabs, Favorites and saved links.
+- Switch with a click, a two-finger swipe (with live preview), `Ctrl+Alt+←/→`, or by dragging a tab onto a Space.
+- Switching returns you to the last tab you used there and reuses an empty tab if the Space has none.
+- New tabs land in the Space you're in. After a Chrome restart they return to the Space they were in, matched by URL.
+
+### One palette to jump anywhere
+
+`Cmd+K` searches open tabs and saved links and runs commands. `Cmd+Shift+K` opens the same palette over any web page.
+
+<img src="docs/palette.gif" width="560" alt="Typing in the palette to jump to a tab, the sidebar and page change" />
+
+### Make every Space yours
+
+Give each Space a name, an emoji, and a solid color or a custom gradient (color picker, eight presets, swap). Choose **Calm** or **Vivid** ambient globally, or override it per Space, including turning it off.
+
+<img src="docs/space-editor.png" width="320" alt="The Space editor with the gradient picker" />
+
+### Backups you can trust
+
+Export everything or just one Space as JSON. Import shows a preview first (Spaces, folders, links, Favorites, export date, skipped entries), then lets you **merge** into what you have or **replace** it. Both are undoable with `Cmd+Z`. A daily copy goes to `Downloads/Arcside backups/`.
+
+<img src="docs/backup-import.png" width="320" alt="The import preview with Merge and Replace" />
+
+### A new tab worth opening
+
+A clean page with search, your Favorites and the saved links of the active Space, plus a button to open or close the sidebar.
+
+<img src="docs/newtab.png" alt="The Arcside new tab page" />
+
+<details>
+<summary><strong>Everything else</strong></summary>
+
+- **Saved tabs and folders.** Permanent tabs per Space in nested folders with colors and drag-and-drop reordering, plus "Move to…" and "Open all". Clicking a saved tab opens or reactivates it, and closing it never deletes it.
+- **Favorites.** A tile grid per Space with its own title and URL, independent of Chrome bookmarks.
+- **Today.** The unsaved tabs of the active Space, with one-click *Clear* and *Duplicates*.
 - **Undo.** `Cmd+Z` reverts removed Favorites and saved tabs, deleted folders, closed tabs and backup imports.
-- **Preview.** `Alt+click` a link to open it in a popup window.
-- **New tab page.** A clean page with search, plus the Favorites and saved tabs of the active Space.
-
-### Make it yours
-
-- **Ambient.** The panel background follows the colors on the left edge of the active page, in 16 smoothly animated zones with a soft drifting aura. Solid-color pages are read straight from the page, everything else from a local screenshot. Pick **Calm** or **Vivid**, tune the intensity, override it per Space, and optionally mix in the Space color (off by default). Text contrast adapts automatically.
 - **History.** Recently closed tabs, plus an automatic archive of inactive unsaved tabs (12 h by default).
+- **Bookmarks.** Import from HTML with folders, export HTML per Space with Favorites in a dedicated folder.
+- **Preview.** `Alt+click` a link to open it in a popup window.
 - **Interface.** Bundled fonts (Inter, Geist, DM Sans, Plus Jakarta Sans, JetBrains Mono, System), full keyboard navigation and reduced-motion support.
 
-### Own your data
-
-- **Import and export.** Import bookmarks from HTML with folders. Export HTML per Space, with Favorites in a dedicated folder that the importer recognizes.
-- **Backups.** Export everything or just one Space as JSON. Import shows a preview first (Spaces, folders, links, Favorites, export date, skipped entries), then lets you **merge** into what you have or **replace** it. Both are undoable with `Cmd+Z`.
-- **Automatic backup.** A daily copy goes to `Downloads/Arcside backups/` (7 rotating files, never written on empty data). Back up on demand or reveal the latest file from Settings.
+</details>
 
 ## Install
 
-Requires **Bun** and Chrome **116+**.
+Arcside isn't on the Chrome Web Store yet, so you load it as an unpacked extension. You need Chrome **116 or newer**.
+
+### From a release
+
+1. Download `arcside-chrome-<version>.zip` from the [latest release](https://github.com/dbbd59/arcside/releases/latest) and extract it into a folder you won't move.
+2. Open `chrome://extensions` and turn on **Developer mode**.
+3. Click **Load unpacked** and pick the extracted folder.
+4. Pin the Arcside icon and click it to open the side panel.
+
+### From source
+
+You also need [Bun](https://bun.sh).
 
 ```bash
+git clone https://github.com/dbbd59/arcside.git
+cd arcside
 bun install
-bun run build        # outputs dist/
+bun run build
 ```
 
-1. Open `chrome://extensions`, turn on **Developer mode**, click **Load unpacked** and pick the `dist/` folder.
-2. Pin the Arcside icon and click it to open the side panel.
+Then follow steps 2 to 4 above and pick the `dist/` folder. `bun run package` creates the release zip in `release/`.
 
-To share it: `bun run package` creates `release/arcside-chrome-<version>.zip` and `release/INSTALL.txt`.
-
-> The extension ID depends on the path of the loaded folder. Loading it from another path makes Chrome treat it as a new extension, and your data doesn't follow. Use Settings → Backup → Export JSON, then Import.
+> [!NOTE]
+> The extension ID depends on the folder you load. Loading it from another path makes Chrome treat it as a new extension and your data doesn't follow. Use **Settings → Backup → Export all**, then **Import**.
 
 ## Shortcuts
 
 | Key | Action |
 |---|---|
 | `Cmd+Shift+D` | Open the panel |
-| `Cmd+Shift+C` | Copy the active tab's link |
 | `Cmd+Shift+K` | Palette over the page |
+| `Cmd+Shift+C` | Copy the active tab's link |
 | `Cmd+K` | Palette in the panel |
 | `Cmd+Z` | Undo the last action |
-| `Ctrl+Alt+←/→` | Previous/next Space |
+| `Ctrl+Alt+←/→` | Previous or next Space |
 | `/` | Search |
 
-Change them at `chrome://extensions/shortcuts`. Chrome can't reopen the side panel on its own after a restart: it needs a gesture (an icon click or a shortcut).
+On Windows and Linux use `Ctrl` for `Cmd`. Change the global ones at `chrome://extensions/shortcuts`.
 
-## Privacy
+## Privacy and permissions
 
-Arcside has no server, no account and no analytics. The only network request it can make is an optional `/favicon.ico` fetch from the sites of your saved links, which you can turn off.
+Arcside has no server, no account and no analytics. The only network request it can make is an optional `/favicon.ico` fetch from the sites of your saved links, which you can turn off in Settings.
 
 | What | Where | Lifetime |
 |---|---|---|
-| Spaces, folders, saved tabs, Favorites, settings, archive | `chrome.storage.local` (`arcsidePreferences`) | Chrome profile |
+| Spaces, folders, saved tabs, Favorites, settings, archive | `chrome.storage.local` | Chrome profile |
 | Favicon cache, per-URL Space memory | `chrome.storage.local` | Chrome profile |
 | Tab → Space, tabs bound to saved items, active Space per window | `chrome.storage.session` | Browser session |
 | Chrome bookmarks | Chrome API | Managed by Chrome |
 
-### Permissions
+<details>
+<summary><strong>Why each permission is needed</strong></summary>
 
-`sidePanel`, `tabs`, `bookmarks`, `storage`, `favicon`, `sessions` (closed tabs), `alarms` (archive and backups), `downloads` (daily backup), `offscreen` and `clipboardWrite` (copy link), `scripting` (in-page palette), a content script on web pages (ambient color probe), `search` (new tab), and `host_permissions: <all_urls>` for the ambient screenshot, missing favicons and the in-page palette.
+| Permission | Used for |
+|---|---|
+| `sidePanel` | The sidebar itself |
+| `tabs`, `sessions` | Listing, activating and restoring tabs, and recently closed tabs |
+| `bookmarks` | The bookmark library and HTML import and export |
+| `storage` | Saving your Spaces and settings locally |
+| `favicon` | Showing site icons from Chrome's own cache |
+| `alarms`, `downloads` | The inactive-tab archive and the daily backup |
+| `offscreen`, `clipboardWrite` | Copying a tab's link |
+| `scripting`, `search` | The palette over web pages and the new tab search |
+| `<all_urls>` and a content script on web pages | Reading the page's edge colors for the ambient effect, missing favicons and the in-page palette. The script only samples a few background colors and sends no page content anywhere |
+
+</details>
+
+## FAQ
+
+<details>
+<summary><strong>Is Arcside a browser?</strong></summary>
+No. It's a Chrome extension that lives in the side panel. It is not affiliated with Arc or The Browser Company.
+</details>
+
+<details>
+<summary><strong>Does it sync between my devices?</strong></summary>
+Not yet. Data lives in the local profile. To move it, export a backup on one machine and import it on the other.
+</details>
+
+<details>
+<summary><strong>The ambient colors look wrong on one page.</strong></summary>
+Solid-color pages are read from the page itself. Anything with images, video or gradients falls back to a local screenshot, which can be off on busy pages. Switch to Calm, lower the intensity, or turn ambient off for that Space from its editor.
+</details>
+
+<details>
+<summary><strong>The panel doesn't reopen after I restart Chrome.</strong></summary>
+Chrome only lets extensions open the side panel from a user gesture. Click the icon or use <code>Cmd+Shift+D</code>.
+</details>
+
+<details>
+<summary><strong>Does it work in Edge, Brave or Arc?</strong></summary>
+Arcside targets Chrome 116 and newer. Other Chromium browsers that ship the side panel API may work, but they're untested.
+</details>
 
 ## Development
 
 Built with React 19, TypeScript 7, Vite 8, Tailwind 4, shadcn/ui and Bun.
 
 ```bash
-bun run build       # typecheck + build into dist/
+bun run dev          # Vite dev server
+bun run build        # typecheck + build into dist/
 bun run typecheck
-bun run lint        # oxlint
-bun test            # unit tests (bun:test)
-bun run package     # distributable zip
+bun run lint         # oxlint
+bun test             # unit tests (bun:test)
+bun run package      # distributable zip
+bun run docs:media   # regenerate the README screenshots and GIFs
 ```
+
+<details>
+<summary><strong>Project structure</strong></summary>
 
 ```text
 src/
@@ -108,4 +203,14 @@ src/
 ├── components/                     # UI (ui/ = shadcn)
 └── lib/                            # models and stores, folders, selectors, preference ops,
                                     # bookmarks/HTML, urls, tabs, favicons, ambient, contrast, backup
+scripts/docs/                       # fake-data harness that renders the README media
 ```
+
+</details>
+
+<details>
+<summary><strong>How the README media is made</strong></summary>
+
+`bun run docs:media` serves the built extension next to a mock Chrome window, injects a fake `chrome.*` API with made-up data (Spaces, tabs, bookmarks), then records the real UI with Playwright and ffmpeg. It needs Python with `playwright`, Google Chrome and `ffmpeg`. Run `bun run build` first. The output lands in `docs/`.
+
+</details>

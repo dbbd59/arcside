@@ -1,7 +1,7 @@
 {
   "name": "arcside",
   "private": true,
-  "version": "1.0.0",
+  "version": "0.0.1",
   "type": "module",
   "scripts": {
     "dev": "bunx --bun vite",
@@ -9,7 +9,8 @@
     "typecheck": "tsc --noEmit",
     "test": "bun test",
     "lint": "oxlint src",
-    "package": "bash scripts/package.sh"
+    "package": "bash scripts/package.sh",
+    "docs:media": "python3 scripts/docs/media.py"
   },
   "dependencies": {
     "@fontsource-variable/dm-sans": "^5.3.0",

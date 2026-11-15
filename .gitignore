@@ -3,5 +3,12 @@ dist/
 release/
 .DS_Store
 *.log
+*.tsbuildinfo
 .vscode/
-dock-backup-*.json
+.idea/
+.env
+.env.*
+coverage/
+__pycache__/
+HANDOFF.md
+*-backup-*.json

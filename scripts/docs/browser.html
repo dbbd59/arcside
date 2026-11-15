@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Northlight</title>
+<style>
+  :root { color-scheme: dark; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; overflow: hidden; background: #202027; font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", sans-serif; }
+  .window { position: absolute; inset: 0; display: flex; flex-direction: column; background: #202027; }
+  .strip { height: 40px; display: flex; align-items: flex-end; gap: 6px; padding: 0 12px; background: #17171c; }
+  .lights { display: flex; gap: 8px; align-self: center; margin-right: 14px; }
+  .lights i { width: 12px; height: 12px; border-radius: 50%; display: block; }
+  .tab { height: 32px; width: 200px; display: flex; align-items: center; gap: 8px; padding: 0 12px; border-radius: 9px 9px 0 0; font-size: 12px; color: #a8a8b8; white-space: nowrap; overflow: hidden; }
+  .tab.on { background: #26262e; color: #ececf4; }
+  .tab b { width: 14px; height: 14px; border-radius: 4px; flex: none; }
+  .bar { height: 42px; display: flex; align-items: center; gap: 10px; padding: 0 14px; background: #26262e; color: #9a9aaa; font-size: 13px; }
+  .url { flex: 1; max-width: 640px; height: 28px; border-radius: 14px; background: #17171c; display: flex; align-items: center; padding: 0 14px; color: #d4d4e0; overflow: hidden; white-space: nowrap; }
+  .body { flex: 1; display: flex; min-height: 0; background: #26262e; padding: 0 8px 8px 0; }
+  iframe { width: 372px; border: 0; flex: none; background: transparent; }
+  .viewport { flex: 1; min-width: 0; border-radius: 10px; overflow: hidden; position: relative; }
+  .page { position: absolute; inset: 0; padding: 0 56px 40px 56px; overflow: hidden; animation: pagein 360ms ease both; }
+  @keyframes pagein { from { opacity: 0; } to { opacity: 1; } }
+  .nav { display: flex; align-items: center; gap: 28px; height: 76px; font-size: 14px; }
+  .nav strong { font-size: 19px; letter-spacing: -.02em; margin-right: auto; }
+  .nav .btn { padding: 8px 16px; border-radius: 999px; font-weight: 600; }
+  .hero { padding: 64px 0 40px; max-width: 760px; }
+  .eyebrow { font-size: 13px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; opacity: .8; margin: 0 0 18px; }
+  h1 { font-size: 64px; line-height: 1.02; letter-spacing: -.035em; margin: 0 0 20px; font-weight: 750; }
+  .hero p.lead { font-size: 19px; line-height: 1.55; margin: 0 0 30px; max-width: 560px; opacity: .88; }
+  .cta { display: flex; gap: 12px; }
+  .cta span { padding: 13px 22px; border-radius: 999px; font-weight: 650; font-size: 15px; }
+  .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 28px; }
+  .card { border-radius: 18px; padding: 22px; min-height: 150px; }
+  .card h3 { margin: 0 0 8px; font-size: 15px; opacity: .85; font-weight: 600; }
+  .card .big { font-size: 38px; font-weight: 750; letter-spacing: -.03em; }
+  .bars { display: flex; align-items: flex-end; gap: 7px; height: 60px; margin-top: 14px; }
+  .bars i { flex: 1; border-radius: 4px; background: currentColor; opacity: .55; }
+  .cursor { position: fixed; z-index: 99; width: 22px; height: 22px; pointer-events: none; transition: transform 40ms linear; left: 0; top: 0; filter: drop-shadow(0 2px 3px rgba(0,0,0,.5)); }
+</style>
+</head>
+<body>
+<div class="window">
+  <div class="strip">
+    <div class="lights"><i style="background:#ff5f57"></i><i style="background:#febc2e"></i><i style="background:#28c840"></i></div>
+    <div class="tab on"><b id="tabicon"></b><span id="tabtitle"></span></div>
+    <div class="tab"><b style="background:#5e6ad2"></b>Cycle 18 · Mobile checkout</div>
+    <div class="tab"><b style="background:#24292f"></b>northwind/api · Pull requests</div>
+  </div>
+  <div class="bar"><span>‹</span><span>›</span><span>↻</span><div class="url" id="url"></div></div>
+  <div class="body">
+    <iframe id="panel" src="/sidepanel.html"></iframe>
+    <div class="viewport" id="viewport"></div>
+  </div>
+</div>
+<svg class="cursor" id="cursor" viewBox="0 0 24 24" style="opacity:0"><path d="M4 2l15 9-6.5 1.5L9 19z" fill="#fff" stroke="#111" stroke-width="1.4" stroke-linejoin="round"/></svg>
+<script>
+  const THEMES = {
+    sunset: { stops: ["#ffb26b", "#ff7a59", "#e0457b", "#7b2d8e", "#2b1055"], ink: "#fff", glass: "rgba(255,255,255,.16)", brand: "Northlight", links: ["Journal", "Routes", "Shop", "About"], eyebrow: "Travel journal · 12 min read", title: "Golden hour in the Dolomites", lead: "Four days hut to hut across the Alta Via 1: cold espresso at sunrise, warm polenta at dusk, and a sky that never quite goes dark.", cta: ["Read the story", "Download the map"], cards: [["Distance", "52 km"], ["Elevation", "3,420 m"], ["Best season", "Sep"]] },
+    ocean: { stops: ["#a8ecff", "#38b6ff", "#1478d4", "#0b3f8f", "#06214d"], ink: "#fff", glass: "rgba(6,33,77,.38)", brand: "Meridian", links: ["Overview", "Latency", "Errors", "Alerts"], eyebrow: "Production · last 24 hours", title: "Latency overview", lead: "p95 response time is down 18% since the last deploy. Two regions are still above their budget.", cta: ["Open incidents", "Share dashboard"], cards: [["p95 latency", "182 ms"], ["Error rate", "0.12%"], ["Requests", "4.8M"]], bars: true },
+    forest: { stops: ["#dcf7b8", "#8bd97d", "#2fa36b", "#12684f", "#0a3b32"], ink: "#fff", glass: "rgba(10,59,50,.34)", brand: "Fieldnotes", links: ["Book", "Exercises", "Notes", "Community"], eyebrow: "Chapter 4 · 18 min", title: "Understanding ownership", lead: "Ownership is Rust's most unique feature, and it enables memory safety guarantees without needing a garbage collector.", cta: ["Next chapter", "Run the example"], cards: [["Rule 1", "One owner"], ["Rule 2", "Borrow, don't copy"], ["Rule 3", "Scope ends, value drops"]] },
+    violet: { stops: ["#f4e1ff", "#c79bff", "#8d5cf6", "#5b34c9", "#2a1670"], ink: "#fff", glass: "rgba(42,22,112,.34)", brand: "Prism Studio", links: ["Work", "Process", "Journal", "Contact"], eyebrow: "Case study · Brand refresh", title: "A softer, bolder identity", lead: "We rebuilt the visual system around one gradient, one typeface and a lot of whitespace for a fintech that wanted to feel human.", cta: ["View the project", "Next case"], cards: [["Duration", "9 weeks"], ["Team", "5 people"], ["Deliverables", "Brand, web, motion"]] },
+    paper: { stops: ["#faf6ec", "#f3ecda", "#ebe1c8"], ink: "#1b1a17", glass: "rgba(255,255,255,.65)", brand: "Handbook", links: ["Guides", "API", "Changelog", "Support"], eyebrow: "Engineering · Updated Nov 12", title: "Retrying idempotent requests", lead: "Retries are safe when the server can recognise a repeat. Here is how we generate keys, store them and expire them without leaking storage.", cta: ["Read the guide", "View the PR"], cards: [["Step 1", "Generate a key"], ["Step 2", "Store the response"], ["Step 3", "Expire after 24h"]] }
+  };
+  const view = document.getElementById("viewport");
+  let current = "";
+  function render(name) {
+    const theme = THEMES[name] ?? THEMES.paper;
+    if (current === name) return;
+    current = name;
+    window.__edge = theme.stops;
+    const bars = theme.bars ? `<div class="bars">${[40, 62, 48, 80, 55, 90, 70, 64, 82, 58].map(h => `<i style="height:${h}%"></i>`).join("")}</div>` : "";
+    view.innerHTML = `<section class="page" style="color:${theme.ink};background:linear-gradient(180deg,${theme.stops.join(",")})">
+      <div class="nav"><strong>${theme.brand}</strong>${theme.links.map(l => `<span>${l}</span>`).join("")}<span class="btn" style="background:${theme.glass}">Sign in</span></div>
+      <div class="hero"><p class="eyebrow">${theme.eyebrow}</p><h1>${theme.title}</h1><p class="lead">${theme.lead}</p>
+        <div class="cta"><span style="background:${theme.ink};color:${theme.ink === "#fff" ? "#16161d" : "#fff"}">${theme.cta[0]}</span><span style="background:${theme.glass}">${theme.cta[1]}</span></div></div>
+      <div class="cards">${theme.cards.map(([k, v], i) => `<div class="card" style="background:${theme.glass}"><h3>${k}</h3><div class="big">${v}</div>${i === 0 ? bars : ""}</div>`).join("")}</div>
+    </section>`;
+  }
+  const iconColors = { "linear.app": "#5e6ad2", "github.com": "#24292f", "mail.google.com": "#ea4335" };
+  addEventListener("message", ({ data }) => {
+    if (!data || data.source !== "arcside-mock") return;
+    if (data.type === "activated") {
+      render(data.theme);
+      document.getElementById("tabtitle").textContent = data.title ?? "";
+      document.getElementById("url").textContent = (data.url ?? "").replace(/^https?:\/\//, "");
+      try { document.getElementById("tabicon").style.background = iconColors[new URL(data.url).host] ?? "#7c4dff"; } catch {}
+    }
+    if (data.type === "mouse") {
+      const cursor = document.getElementById("cursor");
+      if (!cursor) return;
+      const box = document.getElementById("panel").getBoundingClientRect();
+      cursor.style.opacity = 1;
+      cursor.style.transform = `translate(${box.left + data.x}px, ${box.top + data.y}px)`;
+    }
+  });
+  addEventListener("mousemove", event => {
+    const cursor = document.getElementById("cursor");
+    if (!cursor) return;
+    cursor.style.opacity = 1;
+    cursor.style.transform = `translate(${event.clientX}px, ${event.clientY}px)`;
+  });
+  if (location.search.includes("still")) document.getElementById("cursor").remove();
+  window.__setTheme = render;
+</script>
+</body>
+</html>
